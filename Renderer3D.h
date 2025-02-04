@@ -15,9 +15,9 @@ public:
 	Renderer3D(SDL_Window* _window, SDL_Renderer* _renderer, vector<Point3D>& _points, vector<Vertex> _verticies);
 	void render();
 private:
-	Point3D rotateX(Point3D);
-	Point3D rotateY(Point3D);
-	Point3D projection(Point3D);
+	Point3D rotateX(Point3D point);
+	Point3D rotateY(Point3D point);
+	Point2D projection(Point3D point);
 
 
 	//hold the rotational value (360 degrees)

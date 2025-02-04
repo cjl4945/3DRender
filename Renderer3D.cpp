@@ -24,8 +24,8 @@ void Renderer3D::render()
 	{
 		Point3D rotatedStartPoint = rotateX(rotateY(points[vertex.start]));
 		Point3D rotatedEndPoint = rotateX(rotateY(points[vertex.start]));
-		Point3D start = projection(rotatedStartPoint);
-		Point3D end = projection(rotatedEndPoint);
+		Point2D start = projection(rotatedStartPoint);
+		Point2D end = projection(rotatedEndPoint);
 		SDL_RenderDrawLine(renderer, start.x, start.y, end.x, end.y);
 
 	}
@@ -55,6 +55,6 @@ Point3D Renderer3D::rotateY(Point3D point)
 }
 
 Point2D Renderer3D::projection(Point3D point) {
-	return Point2D{WindowSizeX / 2 + (FOV * point.x) / (FOV + point.z) * 100, WindowSizeY / 2 + (FOV * point.y)}
+	return Point2D{ WindowSizeX / 2 + (FOV * point.x) / (FOV + point.z) * 100, WindowSizeY / 2 + (FOV * point.y) / (FOV + point.z) * 100};
 }
 
