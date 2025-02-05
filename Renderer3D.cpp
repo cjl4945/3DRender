@@ -8,34 +8,34 @@ Renderer3D::Renderer3D(SDL_Window* _window, SDL_Renderer* _renderer, vector<Poin
 	verticies = _verticies;
 }
 
-void Renderer3D::render()
-{
-	//frame-independent timing
-	auto time1 = chrono::high_resolution_clock::now();
-	chrono::duration<double> duration(0);
-
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-	SDL_RenderClear(renderer);
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-
-	rotation += 1 * DeltaTime;
-
-	for (auto& vertex : verticies)
-	{
-		Point3D rotatedStartPoint = rotateX(rotateY(points[vertex.start]));
-		Point3D rotatedEndPoint = rotateX(rotateY(points[vertex.start]));
-		Point2D start = projection(rotatedStartPoint);
-		Point2D end = projection(rotatedEndPoint);
-		SDL_RenderDrawLine(renderer, start.x, start.y, end.x, end.y);
-
-	}
-	SDL_RenderPresent(renderer);
-
-	auto time2 = chrono::high_resolution_clock::now();
-	duration = time2 - time1;
-	DeltaTime - duration.count();
-	time1 = time2;
-}
+//void Renderer3D::render()
+//{
+//	//frame-independent timing
+//	auto time1 = chrono::high_resolution_clock::now();
+//	chrono::duration<double> duration(0);
+//
+//	SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+//	SDL_RenderClear(renderer);
+//	SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+//
+//	rotation += 1 * DeltaTime;
+//
+//	for (auto& vertex : verticies)
+//	{
+//		Point3D rotatedStartPoint = rotateX(rotateY(points[vertex.start]));
+//		Point3D rotatedEndPoint = rotateX(rotateY(points[vertex.start]));
+//		Point2D start = projection(rotatedStartPoint);
+//		Point2D end = projection(rotatedEndPoint);
+//		SDL_RenderDrawLine(renderer, start.x, start.y, end.x, end.y);
+//
+//	}
+//	SDL_RenderPresent(renderer);
+//
+//	auto time2 = chrono::high_resolution_clock::now();
+//	duration = time2 - time1;
+//	DeltaTime - duration.count();
+//	time1 = time2;
+//}
 Point3D Renderer3D::rotateX(Point3D point)
 {
 	Point3D returnPoint;
@@ -57,4 +57,58 @@ Point3D Renderer3D::rotateY(Point3D point)
 Point2D Renderer3D::projection(Point3D point) {
 	return Point2D{ WindowSizeX / 2 + (FOV * point.x) / (FOV + point.z) * 100, WindowSizeY / 2 + (FOV * point.y) / (FOV + point.z) * 100};
 }
+
+void Renderer3D::drawCube() {
+	glBegin(GL_QUADS);
+
+
+	//front face
+	glColor3f(1.0f, 0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, 1.0f);
+	glColor3f(0.0f, 1.0f, 0.0f); glVertex3f(1.0f, -1.0f, 1.0f);
+	glColor3f(0.0f, 0.0f, 1.0f); glVertex3f(1.0f, 1.0f, 1.0f);
+	glColor3f(1.0f, 1.0f, 0.0f); glVertex3f(-1.0f, 1.0f, 1.0f);
+
+	//back face
+	glColor3f(1.0f, 0.0f, 1.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
+	glColor3f(0.0f, 1.0f, 1.0f); glVertex3f(1.0f, -1.0f, -1.0f);
+	glColor3f(1.0f, 1.0f, 1.0f); glVertex3f(1.0f, 1.0f, -1.0f);
+	glColor3f(0.5f, 0.5f, 0.5f); glVertex3f(-1.0f, 1.0f,- 1.0f);
+
+}
+
+void Renderer3D::handleMouse(SDL_Event& event) {
+	if (event.type == SDL_MOUSEBUTTONDOWN) 
+	{
+		isDragging = true;
+		SDL_GetMouseState(&lastMouseX, &lastMouseY);
+	}
+	if (event.type == SDL_MOUSEBUTTONUP)
+	{
+		isDragging = false;
+	}
+	if (event.type == SDL_MOUSEMOTION && isDragging)
+	{
+		int mouseX, mouseY;
+		SDL_GetMouseState(&mouseX, &mouseY);
+		rotationX += (mouseY - lastMouseY) * 0.5f;
+		rotationY += (mouseX - lastMouseX) * 0.5f;
+
+		lastMouseX = mouseX;
+		lastMouseY = mouseY;
+
+	}
+}
+
+void Renderer3D::render()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity();
+	glTranslatef(0.0f, 0.0f, -5.0f);
+	glRotatef(rotationX, 1.0f, 0.0f, 0.0f);
+	glRotatef(rotationY, 0.0f, 1.0f, 0.0f);
+	drawCube();
+
+}
+
+
 

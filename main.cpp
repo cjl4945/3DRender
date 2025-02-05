@@ -2,6 +2,7 @@
 #include <vector>
 #include <SDL.h>
 
+
 //cube shape
 vector<Point3D> points{ Point3D{-1.0f, -1.0f, -1.0f}, Point3D{-1.0f, -1.0f, 1.0f}, Point3D{1.0f, -1.0f, -1.0f}, Point3D{-1.0f, 1.0f, -1.0f},
 						Point3D{-1.0f, 1.0f, 1.0f}, Point3D{1.0f, -1.0f, 1.0f}, Point3D{1.0f, 1.0f, -1.0f}, Point3D{1.0f, 1.0f, 1.0f} };
@@ -31,21 +32,25 @@ vector<Vertex> verticies{ Vertex{0, 1 }, Vertex{0, 2 }, Vertex{0, 3 },
 int main(int argc, char** argv) {
 
 	//creation of window and a renderer
-	SDL_Window* window;
-	SDL_Renderer* renderer;
-	window = SDL_CreateWindow("3D Renderer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 960, 540, 0);
-	renderer = SDL_CreateRenderer(window, 1, SDL_RENDERER_ACCELERATED);
+	//sdl_window* window;
+	//sdl_renderer* renderer;
+	//window = sdl_createwindow("3d renderer", sdl_windowpos_centered, sdl_windowpos_centered, 960, 540, 0);
+	//renderer = sdl_createrenderer(window, 1, sdl_renderer_accelerated);
 
-	bool running = true;
+	//bool running = true;
 
-	//creating a 3D renderer
-	Renderer3D renderer3D1(window, renderer, points, verticies);
+	//creating a 3d renderer
+	//renderer3d renderer3d1(window, renderer, points, verticies);
 
-	while (running)
-	{
-		//close window
-		if (SDL_QuitRequested()) { running = false; break; }
-		renderer3D1.render();
-	}
-	return 0;
+	//while (running)
+	//{
+	//	close window
+	//	if (sdl_quitrequested()) { running = false; break; }
+	//	renderer3d1.render();
+	//}
+	//return 0;
+
+
+
+
 }
