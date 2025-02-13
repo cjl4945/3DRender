@@ -1,6 +1,10 @@
-#ifndef MAIN_H
-#define MAIN_H
-#include "Renderer3D.h"
+#pragma once
+#include <SDL.h>
+#include <GL/glew.h>
+#include <iostream>
 
 
-#endif MAIN_H
+using namespace std;
+
+
+
