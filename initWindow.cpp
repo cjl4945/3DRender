@@ -1,4 +1,5 @@
 #include "InitWindow.h"
+#include "geometry.h"
 
 SDL_Window* window = nullptr;
 SDL_GLContext context = nullptr;
@@ -69,6 +70,7 @@ void renderFrame()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     SDL_GL_SwapWindow(window);
+    glBindVertexArray(VAO)
 }
 
 void endSDL(int flag)
