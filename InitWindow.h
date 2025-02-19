@@ -7,10 +7,14 @@ extern SDL_Window* window;
 extern SDL_GLContext context;
 
 
-#define WINDOW  1
-#define CONTEXT 2
-#define GLEW 3
-#define ALL 4
+enum class SDLFlag
+{
+	WINDOW = 1,
+	CONTEXT = 2,
+	GLEW = 3,
+	ALL = 4
+
+};
 
 
 
@@ -23,7 +27,7 @@ int createGLContext();
 
 int initGLEW();
 
-void endSDL(int flag);
+void endSDL(SDLFlag flag);
 
 void enableDepthTest();
 

@@ -2,7 +2,7 @@
 #include "InitWindow.h"
 #include "geometry.h"
 
-
+using namespace std;
 
 
 
@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
 		renderFrame();
 	}
 
-	endSDL(ALL);
+	endSDL(SDLFlag::ALL);
 	return 0;
 
 }

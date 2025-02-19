@@ -1,6 +1,8 @@
 #include "InitWindow.h"
 #include "geometry.h"
 
+using namespace std;
+
 SDL_Window* window = nullptr;
 SDL_GLContext context = nullptr;
 
@@ -18,7 +20,7 @@ int createWindow()
     if (!window)
     {
         cerr << "Failed to create window: " << SDL_GetError() << endl;
-        endSDL(WINDOW);
+        endSDL(SDLFlag::WINDOW);
         return -1;
     }
     return 1;
@@ -31,7 +33,7 @@ int createGLContext()
     if (!context)
     {
         cerr << "Failed to create OpenGL context: " << SDL_GetError() << endl;
-        endSDL(CONTEXT);
+        endSDL(SDLFlag::CONTEXT);
         return -1;
     }
     return 1;
@@ -43,7 +45,7 @@ int initGLEW()
     if (glewInit() != GLEW_OK)
     {
         cerr << "Failed to initialize GLEW" << endl;
-        endSDL(GLEW);
+        endSDL(SDLFlag::GLEW);
         return -1;
     }
     return 1;
@@ -70,27 +72,27 @@ void renderFrame()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     SDL_GL_SwapWindow(window);
-    glBindVertexArray(VAO)
+    glBindVertexArray(VAO);
 }
 
-void endSDL(int flag)
+void endSDL(SDLFlag flag)
 {
     switch (flag) 
     {
-    case WINDOW:
+    case SDLFlag::WINDOW:
         SDL_Quit();
         break;
-    case CONTEXT:
+    case SDLFlag::CONTEXT:
         SDL_DestroyWindow(window);
         SDL_Quit();
         break;
 
-    case GLEW:
+    case SDLFlag::GLEW:
         SDL_GL_DeleteContext(context);
         SDL_DestroyWindow(window);
         SDL_Quit();
         break;
-    case ALL:
+    case SDLFlag::ALL:
         SDL_GL_DeleteContext(context);
         SDL_DestroyWindow(window);
         SDL_Quit();
