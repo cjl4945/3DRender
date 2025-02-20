@@ -141,11 +141,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Cube.h" />
     <ClInclude Include="geometry.h" />
     <ClInclude Include="InitWindow.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Cube.cpp" />
     <ClCompile Include="geometry.cpp" />
     <ClCompile Include="initWindow.cpp" />
     <ClCompile Include="main.cpp" />
