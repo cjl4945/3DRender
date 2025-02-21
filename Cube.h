@@ -21,8 +21,8 @@ private:
 public:
 	Cube(); 
 	~Cube();
-
-	  void draw() const;
+	
+	void draw() const;
 };
 
 

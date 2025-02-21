@@ -35,6 +35,8 @@ int main(int argc, char** argv) {
 			SDL_GL_SwapWindow(window);
 	}
 
+	clog << "PROGRAM EXITED" << endl;
+
 	endSDL(SDLFlag::ALL);
 	return 0;
 

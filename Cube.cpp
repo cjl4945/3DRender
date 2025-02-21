@@ -49,7 +49,7 @@ void Cube::generateBuffers()
 	{
 		std::cerr << "Failed to generate vertex buffer object: " << glGetError() << std::endl; exit(EXIT_FAILURE);
 	}
-	glGenVertexArrays(1, &EBO);
+	glGenBuffers(1, &EBO);
 	if (!EBO)
 	{
 		std::cerr << "Failed to generate element buffer object: " << glGetError() << std::endl; exit(EXIT_FAILURE);
