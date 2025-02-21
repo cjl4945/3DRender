@@ -3,24 +3,25 @@
 
 const float Cube::vertices[24] =
 {
-	-0.5f, 0.5f, -0.5f, //Vertex 0
-	0.5f, -0.5f, -0.5f, //Vertex 1
-	0.5f, 0.5f, -0.5f, //Vertex 2
-	-0.5f, 0.5f, -0.5f, //Vertex 3
-	-0.5f, -0.5f, 0.5f, //Vertex 4
-	0.5f, -0.5f, 0.5f, //Vertex 5
-	0.5f, 0.5f, 0.5f, //Vertex 6
-	-0.5f, 0.5f, 0.5f, //Vertex 7
+	-0.5f, -0.5f, -0.5f, //Vertex 0:  bottom left back
+	0.5f, -0.5f, -0.5f, //Vertex 1: bottom right back 
+	0.5f, 0.5f, -0.5f, //Vertex 2: bottom right front
+	-0.5f, 0.5f, -0.5f, //Vertex 3 bottom left front
+
+	-0.5f, -0.5f, 0.5f, //Vertex 4 top left back
+	0.5f, -0.5f, 0.5f, //Vertex 5 top right back
+	0.5f, 0.5f, 0.5f, //Vertex 6 top left front
+	-0.5f, 0.5f, 0.5f, //Vertex 7 top right front
 };
 
 const unsigned int Cube::indices[36] =
 {
-	0,1,2,	2,3,0, //Back face 
-	4,5,6,	6, 7, 4, //Front face
-	0,4,7,	7,3,0, //Left face
-	1,5,6,	6,2,1, // Right face
-	3,2,6,	6,7,3,	//Top Face
-	0,1,5,	5,4,0 //Bottom face
+	0,1,5,	5,4,0, //Back face 
+	3,2,3,	6, 7, 3, //Front face
+	0,3,7,	7,4,0, //Left face
+	1,2,6,	6,5,1, // Right face
+	4,5,6,	6,7,4,	//Top Face
+	0,1,2,	2,3,0 //Bottom face
 };
 
 Cube::Cube() : VAO(0), VBO(0), EBO(0)
