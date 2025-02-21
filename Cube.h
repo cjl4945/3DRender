@@ -13,7 +13,7 @@ private:
 	GLuint VAO, VBO, EBO;
 
 	//Vertex data for a cube (8 corners)
-	static const float vertices[24];
+	static const float vertices[144];
 
 	// Index data for the 12 triangles (36 indices) taht compose a cube
 	static const unsigned int indices[36];
@@ -21,7 +21,7 @@ private:
 public:
 	Cube(); 
 	~Cube();
-	
+
 	void draw() const;
 };
 

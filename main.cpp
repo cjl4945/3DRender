@@ -32,19 +32,58 @@ int main(int argc, char** argv) {
 	const char* vertexShaderSource = R"(
 		#version 330 core
 		layout(location = 0) in vec3  aPos;
+		layout(location = 1) in vec3 aNormal;
+
+
 		uniform mat4 model;
 		uniform mat4 view;
 		uniform mat4 projection;
+		
+		out vec3 FragPos;
+		out vec3 Normal;
+
+
 		void main() {
-			gl_Position = projection * view * model * vec4(aPos, 1.0);
+			// Calculate the vertex position in world space.
+			FragPos = vec3(model * vec4(aPos, 1.0));
+			// Transform the normal using the inverse transpose of the model matrix.
+			Normal = mat3(transpose(inverse(model))) * aNormal;
+			gl_Position = projection * view * vec4(FragPos, 1.0);
 		}
 	)";
 
 	const char* fragmentShaderSource = R"(
 		#version 330 core
+		in vec3 FragPos;
+		in vec3 Normal;
+
 		out vec4 FragColor;
+
+		uniform vec3 lightPos;
+		uniform vec3 viewPos;
+		uniform vec3 lightColor;
+		uniform vec3 objectColor;
+
 		void main() {
-			FragColor = vec4(0.5, 0.0, 0.0, 1.0);
+			//Ambient lighting
+			float ambientStrength = 0.1;
+			vec3 ambient = ambientStrength * lightColor;
+
+			//Diffuse lighting
+			vec3 norm = normalize(Normal);
+			vec3 lightDir = normalize(lightPos - FragPos);
+			float diff = max(dot(norm, lightDir), 0.0);
+			vec3 diffuse = diff * lightColor;
+
+			//Specular lighting
+			float specularStrength = 0.5;
+			vec3 viewDir = normalize(viewPos - FragPos);
+			vec3 reflectDir = reflect(-lightDir, norm);
+			float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+			vec3 specular = specularStrength * spec * lightColor;
+	
+			vec3 result = (ambient + diffuse + specular) * objectColor;
+			FragColor = vec4(result, 1.0);
 		}
 	)";
 
@@ -64,19 +103,30 @@ int main(int argc, char** argv) {
 			GLint modelLoc = glGetUniformLocation(shader.ID, "model");
 			GLint viewLoc = glGetUniformLocation(shader.ID, "view");
 			GLint projLoc = glGetUniformLocation(shader.ID, "projection");
+			GLint lightPosLoc = glGetUniformLocation(shader.ID, "lightPos");
+			GLint viewPosLoc = glGetUniformLocation(shader.ID, "viewPos");
+			GLint lightColorLoc = glGetUniformLocation(shader.ID, "lightColor");
+			GLint objectColorLoc = glGetUniformLocation(shader.ID, "objectColor");
+
 
 			//transformation matrices
 			glm::mat4 model = glm::mat4(1.0f);
 			//rotate the cube over time
-			model = glm::rotate(model, static_cast<float>(SDL_GetTicks()) / 1000.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::rotate(model, static_cast<float>(SDL_GetTicks()) / 5000.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
-			glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f));
+			glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.0f));
 			glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
 
 			//pass matrices to the shader
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 			glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
+			//Set lighting uniforms
+			glUniform3f(lightPosLoc, 1.2f, 1.0f, 2.0f);
+			glUniform3f(viewPosLoc, 0.0f, 0.0f, 5.0f);
+			glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f);
+			glUniform3f(objectColorLoc, 1.0f, 0.5f, 0.31f);
 
 
 			cube.draw();
