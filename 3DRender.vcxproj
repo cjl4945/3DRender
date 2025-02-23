@@ -146,12 +146,14 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="InitWindow.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="Platform.h" />
     <ClInclude Include="Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="initWindow.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

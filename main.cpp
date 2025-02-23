@@ -2,6 +2,7 @@
 #include "InitWindow.h"
 #include "Cube.h"
 #include "Shader.h"
+#include "Platform.h"
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
@@ -15,6 +16,7 @@ using namespace std;
 
 
 int main(int argc, char** argv) {
+	cout << "Size of float :" << sizeof(float) << endl;
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		cerr << "Failed to initialize SDL: " << SDL_GetError() << endl;
@@ -66,7 +68,7 @@ int main(int argc, char** argv) {
 
 		void main() {
 			//Ambient lighting
-			float ambientStrength = 0.1;
+			float ambientStrength = 0.3;
 			vec3 ambient = ambientStrength * lightColor;
 
 			//Diffuse lighting
@@ -88,10 +90,8 @@ int main(int argc, char** argv) {
 	)";
 
 	Shader shader(vertexShaderSource, fragmentShaderSource);
-
-
-
 	Cube cube;
+	Platform platform;
 
 	bool running = true;
 	while (running)
@@ -108,24 +108,40 @@ int main(int argc, char** argv) {
 			GLint lightColorLoc = glGetUniformLocation(shader.ID, "lightColor");
 			GLint objectColorLoc = glGetUniformLocation(shader.ID, "objectColor");
 
+			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 			//transformation matrices
-			glm::mat4 model = glm::mat4(1.0f);
-			//rotate the cube over time
-			model = glm::rotate(model, static_cast<float>(SDL_GetTicks()) / 5000.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-
-			glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.0f));
+			glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -1.5f, -5.0f));
 			glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
 
+			//Change the background color
+			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
 			//pass matrices to the shader
-			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 			glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
 			//Set lighting uniforms
-			glUniform3f(lightPosLoc, 1.2f, 1.0f, 2.0f);
+			glUniform3f(lightPosLoc, 1.2f, 2.0f, 2.0f);
 			glUniform3f(viewPosLoc, 0.0f, 0.0f, 5.0f);
 			glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f);
+			
+
+			// ---Draw the platform
+			glm::mat4 platformModel = glm::mat4(1.0f);
+			platformModel = glm::translate(platformModel, glm::vec3(0.0f, 0.0f, 0.0f));
+			platformModel = glm::scale(platformModel, glm::vec3(10.0f, 1.0f, 10.0f));
+			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(platformModel));
+
+			glUniform3f(objectColorLoc, 0.2f, 0.8f, 0.2f);
+			platform.draw();
+
+			//--- Draw the cube
+			//Translate the cube so it sits on top of the platform, moving up 0.5 (x , y** , z )
+			glm::mat4 cubeModel = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 2.5f, 0.0f));
+
+			cubeModel = glm::rotate(cubeModel, static_cast<float>(SDL_GetTicks()) / 1000.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(cubeModel));
 			glUniform3f(objectColorLoc, 1.0f, 0.5f, 0.31f);
 
 
