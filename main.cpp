@@ -3,6 +3,7 @@
 #include "Cube.h"
 #include "Shader.h"
 #include "Platform.h"
+#include "Camera.h"
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
@@ -16,6 +17,11 @@ using namespace std;
 
 
 int main(int argc, char** argv) {
+	Camera camera(glm::vec3(0.0f, 2.0f, 3.0f));
+	float deltaTime = 0.0f;
+	float lastFrame = 0.0f;
+
+	
 	cout << "Size of float :" << sizeof(float) << endl;
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -96,7 +102,13 @@ int main(int argc, char** argv) {
 	bool running = true;
 	while (running)
 	{
-			processEvents(running);
+			float currentFrame = SDL_GetTicks() / 1000.f;
+			deltaTime = currentFrame - lastFrame;
+			lastFrame = currentFrame;
+			SDL_Event event;
+			processEvents(running, camera, deltaTime);
+			
+
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			shader.use();
@@ -111,8 +123,8 @@ int main(int argc, char** argv) {
 			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 			//transformation matrices
-			glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -1.5f, -5.0f));
-			glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
+			glm::mat4 view = camera.getViewMatrix();
+			glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
 
 			//Change the background color
 			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);

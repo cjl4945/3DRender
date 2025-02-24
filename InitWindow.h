@@ -1,5 +1,6 @@
 #pragma once
 #include "main.h"
+#include "Camera.h"
 
 const int WIDTH = 800, HEIGHT = 600;
 
@@ -31,6 +32,6 @@ void endSDL(SDLFlag flag);
 
 void enableDepthTest();
 
-void processEvents(bool& running);
+void processEvents(bool& running, Camera& camera, float deltaTime);
 
 void renderFrame();
