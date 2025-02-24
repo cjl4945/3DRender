@@ -58,6 +58,18 @@ void enableDepthTest()
 
 void processEvents(bool& running, Camera& camera, float deltaTime)
 {
+    //Handle keyboard input
+    SDL_PumpEvents();
+    const Uint8* state = SDL_GetKeyboardState(NULL);
+    if (state[SDL_SCANCODE_W])
+        camera.processKeyboard(Camera_Movement::FORWARD, deltaTime);
+    if (state[SDL_SCANCODE_S])
+        camera.processKeyboard(Camera_Movement::BACKWARD, deltaTime);
+    if (state[SDL_SCANCODE_A])
+        camera.processKeyboard(Camera_Movement::LEFT, deltaTime);
+    if (state[SDL_SCANCODE_D])
+        camera.processKeyboard(Camera_Movement::RIGHT, deltaTime);
+
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
@@ -65,16 +77,7 @@ void processEvents(bool& running, Camera& camera, float deltaTime)
         {
             running = false;
         }
-        //Handle keyboard input
-        const Uint8* state = SDL_GetKeyboardState(NULL);
-        if (state[SDL_SCANCODE_W])
-            camera.processKeyboard(Camera_Movement::FORWARD, deltaTime);
-        if (state[SDL_SCANCODE_S])
-            camera.processKeyboard(Camera_Movement::BACKWARD, deltaTime);
-        if (state[SDL_SCANCODE_A])
-            camera.processKeyboard(Camera_Movement::LEFT, deltaTime);
-        if (state[SDL_SCANCODE_D])
-            camera.processKeyboard(Camera_Movement::RIGHT, deltaTime);
+       
 
 
         if (event.type == SDL_MOUSEMOTION)
