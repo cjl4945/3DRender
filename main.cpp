@@ -105,8 +105,17 @@ int main(int argc, char** argv) {
 			float currentFrame = SDL_GetTicks() / 1000.f;
 			deltaTime = currentFrame - lastFrame;
 			lastFrame = currentFrame;
-			SDL_Event event;
 			processEvents(running, camera, deltaTime);
+
+			//Start ImGui frame
+			ImGui_ImplOpenGL3_NewFrame();
+			ImGui_ImplSDL2_NewFrame(window);
+			ImGui::NewFrame();
+
+			//---Building gui
+			{
+				//code the gui right here
+			}
 			
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
