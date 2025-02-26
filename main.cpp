@@ -23,6 +23,8 @@ int main(int argc, char** argv) {
 	Camera camera(glm::vec3(0.0f, 2.0f, 3.0f));
 	float deltaTime = 0.0f;
 	float lastFrame = 0.0f;
+	static float lightPos[3] = { 1.2f, 2.0f, 2.0f };
+	static float objectColor[3] = { 1.0f, 0.5f, 0.31f };
 
 	
 	cout << "Size of float :" << sizeof(float) << endl;
@@ -120,25 +122,26 @@ int main(int argc, char** argv) {
 			ImGui::NewFrame();
 
 			//---Building gui
-			{
-				ImGui::Begin("Debug Controls");
+			
+			ImGui::SetNextWindowSize(ImVec2(350, 100), ImGuiCond_Always);
+			ImGui::Begin("Debug Controls");
 
-				//light position parameter tweak
-				static float lightPos[3] = { 1.2f, 2.0f, 2.0f };
-				ImGui::SliderFloat3("Light Position", lightPos, -10.0f, 10.0f);
-				//Pass values to shader
-				glUniform3f(glGetUniformLocation(shader.ID, "lightPos"), lightPos[0], lightPos[1], lightPos[2]);
+			//light position parameter tweak
+			
+			ImGui::SliderFloat3("Light Position", lightPos, -10.0f, 10.0f);
+			
+				
 
-				//object color tweak 
-				static float objectColor[3] = { 1.0f, 0.5f, 0.31f };
-				ImGui::ColorEdit3("Object Color", objectColor);
-				//Pass values to shader
-				glUniform3f(glGetUniformLocation(shader.ID, "objectColor"), objectColor[0], objectColor[1], objectColor[2]);
+			//object color tweak 
+			
+			ImGui::ColorEdit3("Object Color", objectColor);
+			//Pass values to shader
+				
 
-				ImGui::End();
+			ImGui::End();
 
 				//code the gui right here
-			}
+			
 			
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -166,7 +169,8 @@ int main(int argc, char** argv) {
 			glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
 			//Set lighting uniforms
-			glUniform3f(lightPosLoc, 1.2f, 2.0f, 2.0f);
+			glUniform3f(lightPosLoc, lightPos[0], lightPos[1], lightPos[2]);
+			
 			glUniform3f(viewPosLoc, 0.0f, 0.0f, 5.0f);
 			glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f);
 			
@@ -186,7 +190,7 @@ int main(int argc, char** argv) {
 
 			cubeModel = glm::rotate(cubeModel, static_cast<float>(SDL_GetTicks()) / 1000.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(cubeModel));
-			glUniform3f(objectColorLoc, 1.0f, 0.5f, 0.31f);
+			glUniform3f(objectColorLoc, objectColor[0], objectColor[1], objectColor[2]);
 
 
 			cube.draw();

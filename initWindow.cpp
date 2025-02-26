@@ -28,7 +28,6 @@ int createWindow()
 
 int createGLContext() 
 {
-    if (!window) return - 1;
     context = SDL_GL_CreateContext(window);
     if (!context)
     {
@@ -73,6 +72,7 @@ void processEvents(bool& running, Camera& camera, float deltaTime)
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
+        ImGui_ImplSDL2_ProcessEvent(&event);
         if (event.type == SDL_QUIT) 
         {
             running = false;
@@ -80,7 +80,7 @@ void processEvents(bool& running, Camera& camera, float deltaTime)
        
 
 
-        if (event.type == SDL_MOUSEMOTION)
+        if (!ImGui::GetIO().WantCaptureMouse && event.type == SDL_MOUSEMOTION)
         {
             camera.processMouseMovement(static_cast<float>(event.motion.xrel),
                 -static_cast<float>(event.motion.yrel));

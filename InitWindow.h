@@ -1,6 +1,7 @@
 #pragma once
 #include "main.h"
 #include "Camera.h"
+#include "backends/imgui_impl_sdl2.h"
 
 const int WIDTH = 800, HEIGHT = 600;
 
