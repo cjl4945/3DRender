@@ -71,13 +71,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Program Files\SDL2\include;C:\Program Files\glew-2.1.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files\SDL2\lib\x64;C:\Program Files\glew-2.1.0\lib\Release\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files\SDL3\include;C:\Program Files\SDL2\include;C:\Program Files\glew-2.1.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files\SDL3\lib\x64;C:\Program Files\SDL2\lib\x64;C:\Program Files\glew-2.1.0\lib\Release\x64;$(LibraryPath)</LibraryPath>
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Program Files\SDL2\include;C:\Program Files\glew-2.1.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files\SDL2\lib\x64;C:\Program Files\glew-2.1.0\lib\Release\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files\SDL3\include;C:\Program Files\SDL2\include;C:\Program Files\glew-2.1.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files\SDL3\lib\x64;C:\Program Files\SDL2\lib\x64;C:\Program Files\glew-2.1.0\lib\Release\x64;$(LibraryPath)</LibraryPath>
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -114,7 +114,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\chase\OneDrive\Desktop\Coding Projects\3DRender\Linking\GLM\include;C:\Program Files\SDL2\include;C:\Program Files\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\chase\OneDrive\Desktop\Coding Projects\3DRender\Linking\imgui;C:\Users\chase\OneDrive\Desktop\Coding Projects\3DRender\Linking\GLM\include;C:\Program Files\SDL2\include;C:\Program Files\glew-2.1.0\include;C:\Program Files\SDL3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -131,7 +131,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\chase\OneDrive\Desktop\Coding Projects\3DRender\Linking\GLM\include;C:\Program Files\SDL2\include;C:\Program Files\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\chase\OneDrive\Desktop\Coding Projects\3DRender\Linking\imgui;C:\Users\chase\OneDrive\Desktop\Coding Projects\3DRender\Linking\GLM\include;C:\Program Files\SDL2\include;C:\Program Files\glew-2.1.0\include;C:\Program Files\SDL3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -146,6 +146,14 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="InitWindow.h" />
+    <ClInclude Include="Linking\imgui\backends\imgui_impl_opengl3.h" />
+    <ClInclude Include="Linking\imgui\backends\imgui_impl_sdl2.h" />
+    <ClInclude Include="Linking\imgui\imconfig.h" />
+    <ClInclude Include="Linking\imgui\imgui.h" />
+    <ClInclude Include="Linking\imgui\imgui_internal.h" />
+    <ClInclude Include="Linking\imgui\imstb_rectpack.h" />
+    <ClInclude Include="Linking\imgui\imstb_textedit.h" />
+    <ClInclude Include="Linking\imgui\imstb_truetype.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Platform.h" />
     <ClInclude Include="Shader.h" />
@@ -154,6 +162,13 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="initWindow.cpp" />
+    <ClCompile Include="Linking\imgui\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Linking\imgui\backends\imgui_impl_sdl2.cpp" />
+    <ClCompile Include="Linking\imgui\imgui.cpp" />
+    <ClCompile Include="Linking\imgui\imgui_demo.cpp" />
+    <ClCompile Include="Linking\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Linking\imgui\imgui_tables.cpp" />
+    <ClCompile Include="Linking\imgui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Shader.cpp" />

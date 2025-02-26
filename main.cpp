@@ -4,6 +4,9 @@
 #include "Shader.h"
 #include "Platform.h"
 #include "Camera.h"
+#include "imgui.h"
+#include "backends/imgui_impl_sdl2.h"
+#include "backends/imgui_impl_opengl3.h"
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
@@ -35,6 +38,10 @@ int main(int argc, char** argv) {
 
 	initGLEW();
 	enableDepthTest();
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGui_ImplSDL2_InitForOpenGL(window, context);
+	ImGui_ImplOpenGL3_Init("#version 330");
 
 
 	const char* vertexShaderSource = R"(
@@ -109,11 +116,27 @@ int main(int argc, char** argv) {
 
 			//Start ImGui frame
 			ImGui_ImplOpenGL3_NewFrame();
-			ImGui_ImplSDL2_NewFrame(window);
+			ImGui_ImplSDL2_NewFrame();
 			ImGui::NewFrame();
 
 			//---Building gui
 			{
+				ImGui::Begin("Debug Controls");
+
+				//light position parameter tweak
+				static float lightPos[3] = { 1.2f, 2.0f, 2.0f };
+				ImGui::SliderFloat3("Light Position", lightPos, -10.0f, 10.0f);
+				//Pass values to shader
+				glUniform3f(glGetUniformLocation(shader.ID, "lightPos"), lightPos[0], lightPos[1], lightPos[2]);
+
+				//object color tweak 
+				static float objectColor[3] = { 1.0f, 0.5f, 0.31f };
+				ImGui::ColorEdit3("Object Color", objectColor);
+				//Pass values to shader
+				glUniform3f(glGetUniformLocation(shader.ID, "objectColor"), objectColor[0], objectColor[1], objectColor[2]);
+
+				ImGui::End();
+
 				//code the gui right here
 			}
 			
@@ -167,11 +190,17 @@ int main(int argc, char** argv) {
 
 
 			cube.draw();
+			ImGui::Render();
+			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 			SDL_GL_SwapWindow(window);
 	}
 
 	clog << "PROGRAM EXITED" << endl;
+
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
 
 	endSDL(SDLFlag::ALL);
 	return 0;
