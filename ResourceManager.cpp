@@ -61,6 +61,7 @@ void ResourceManager::loadResourceAsync(const std::string& path)
 
 bool ResourceManager::getNextResource(ResourceData& resource)
 {
+	//resources can't be modified
 	std::lock_guard<std::mutex> lock(queueMutex);
 	if (resourceQueue.empty())
 		return false;
