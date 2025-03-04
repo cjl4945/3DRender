@@ -33,6 +33,6 @@ void endSDL(SDLFlag flag);
 
 void enableDepthTest();
 
-void processEvents(bool& running, Camera& camera, float deltaTime);
+void processEvents(bool& running, Camera& camera, float deltaTime, bool& paused);
 
 void renderFrame();

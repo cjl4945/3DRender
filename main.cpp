@@ -4,12 +4,15 @@
 #include "Shader.h"
 #include "Platform.h"
 #include "Camera.h"
+#include "ResourceManager.h"
 #include "imgui.h"
 #include "backends/imgui_impl_sdl2.h"
 #include "backends/imgui_impl_opengl3.h"
+#include "stb_image.h"
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
+
 
 
 
@@ -44,6 +47,9 @@ int main(int argc, char** argv) {
 	ImGui::CreateContext();
 	ImGui_ImplSDL2_InitForOpenGL(window, context);
 	ImGui_ImplOpenGL3_Init("#version 330");
+
+	ResourceManager resourceManager;
+	resourceManager.loadResourceAsync("resources/textures/milkWay.png");
 
 
 	const char* vertexShaderSource = R"(
@@ -109,12 +115,13 @@ int main(int argc, char** argv) {
 	Platform platform;
 
 	bool running = true;
+	bool paused = false;
 	while (running)
 	{
 			float currentFrame = SDL_GetTicks() / 1000.f;
 			deltaTime = currentFrame - lastFrame;
 			lastFrame = currentFrame;
-			processEvents(running, camera, deltaTime);
+			processEvents(running, camera, deltaTime, paused);
 
 			//Start ImGui frame
 			ImGui_ImplOpenGL3_NewFrame();
@@ -123,8 +130,12 @@ int main(int argc, char** argv) {
 
 			//---Building gui
 			
-			ImGui::SetNextWindowSize(ImVec2(350, 100), ImGuiCond_Always);
+			ImGui::SetNextWindowSize(ImVec2(400, 131), ImGuiCond_Appearing);
 			ImGui::Begin("Debug Controls");
+			
+			ImGui::Text("Parameter-Tweak, Press ESC key to unlock/lock movement");
+			ImGui::Text("Width: %0.1f	Height:%0.1f", ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
+			
 
 			//light position parameter tweak
 			
@@ -133,9 +144,20 @@ int main(int argc, char** argv) {
 				
 
 			//object color tweak 
-			
-			ImGui::ColorEdit3("Object Color", objectColor);
-			//Pass values to shader
+	
+			ImGui::ColorEdit3( "Object Color", objectColor);
+			if (ImGui::Button("Resume"))
+			{
+				paused = false;
+				SDL_ShowCursor(SDL_DISABLE);
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Pause"))
+			{
+				paused = true;
+				SDL_ShowCursor(SDL_ENABLE);
+			}
+
 				
 
 			ImGui::End();
@@ -173,6 +195,30 @@ int main(int argc, char** argv) {
 			
 			glUniform3f(viewPosLoc, 0.0f, 0.0f, 5.0f);
 			glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f);
+
+
+
+			ResourceData texData;
+			while (resourceManager.getNextResource(texData))
+			{
+				if (texData.data)
+				{
+					GLuint textureID;
+					glGenTextures(1, &textureID);
+					glBindTexture(GL_TEXTURE_2D, textureID);
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+					GLenum format = (texData.channels == 4) ? GL_RGBA : GL_RGB;
+					glTexImage2D(GL_TEXTURE_2D, 0, format, texData.width, texData.height, 0, format, GL_UNSIGNED_BYTE, texData.data);
+					glGenerateMipmap(GL_TEXTURE_2D);
+					stbi_image_free(texData.data);
+					cout << "Loaded Texture: " << texData.name << " with ID: " << textureID << endl;
+
+
+				}
+			}
 			
 
 			// ---Draw the platform
