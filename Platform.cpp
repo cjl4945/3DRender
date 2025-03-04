@@ -1,12 +1,12 @@
 #include "Platform.h"
 
-const float Platform::vertices[24] 
+const float Platform::vertices[32] 
 {
 	//positions				//normals (pointing up) (nx, ny**, nz)
-	-2.0f, 0.0f, -2.0f,		0.0f, 1.0f, 0.0f,
-	2.0f, 0.0f, -2.0f,		0.0f, 1.0f, 0.0f,
-	2.0f, 0.0f, 2.0f,		0.0f, 1.0f, 0.0f,
-	-2.0f, 0.0f, 2.0f,		0.0f, 1.0f, 0.0f,
+	-2.0f, 0.0f, -2.0f,		0.0f, 1.0f, 0.0f,	0.0f, 0.0f,
+	2.0f, 0.0f, -2.0f,		0.0f, 1.0f, 0.0f,	1.0f, 0.0f,
+	2.0f, 0.0f, 2.0f,		0.0f, 1.0f, 0.0f,	1.0f, 1.0f,
+	-2.0f, 0.0f, 2.0f,		0.0f, 1.0f, 0.0f,	0.0, 1.0f
 
 };
 
@@ -74,6 +74,9 @@ void Platform::setVertexAttribs() const
 	// Attribute 1: normal (next 3 floats)
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
+	//Attribute 2: texture coordinates (last 2 floats)
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 }
 void Platform::draw() const
 {

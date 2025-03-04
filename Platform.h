@@ -21,7 +21,7 @@ private:
 
 	GLuint VAO, VBO, EBO;
 
-	static const float vertices[24];
+	static const float vertices[32];
 
 	static const unsigned int indices[6];
 };

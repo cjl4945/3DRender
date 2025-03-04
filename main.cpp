@@ -48,14 +48,37 @@ int main(int argc, char** argv) {
 	ImGui_ImplSDL2_InitForOpenGL(window, context);
 	ImGui_ImplOpenGL3_Init("#version 330");
 
+	//start loading texture and create an object
 	ResourceManager resourceManager;
-	resourceManager.loadResourceAsync("resources/textures/milkWay.png");
+	resourceManager.loadResourceAsync("resources/textures/milkyWay.jpg");
+
+	GLuint platformTexture = 0;
+	ResourceData resData;
+	if (resourceManager.getNextResource(resData))
+	{
+		if (resData.data)
+		{
+			glGenTextures(1, &platformTexture);
+			glBindTexture(GL_TEXTURE_2D, platformTexture);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			GLenum format = (resData.channels == 4) ? GL_RGBA : GL_RGB;
+			glTexImage2D(GL_TEXTURE_2D, 0, format, resData.width, resData.height, 0, format, GL_UNSIGNED_BYTE, resData.data);
+			glGenerateMipmap(GL_TEXTURE_2D);
+			stbi_image_free(resData.data);
+			cout << "Loaded texture: " << resData.name << endl;
+
+		}
+	}
 
 
 	const char* vertexShaderSource = R"(
 		#version 330 core
 		layout(location = 0) in vec3  aPos;
 		layout(location = 1) in vec3 aNormal;
+		layout(location = 2) in vec2 aTexCoords;
 
 
 		uniform mat4 model;
@@ -64,6 +87,7 @@ int main(int argc, char** argv) {
 		
 		out vec3 FragPos;
 		out vec3 Normal;
+		out vec2 TexCoords;
 
 
 		void main() {
@@ -71,6 +95,7 @@ int main(int argc, char** argv) {
 			FragPos = vec3(model * vec4(aPos, 1.0));
 			// Transform the normal using the inverse transpose of the model matrix.
 			Normal = mat3(transpose(inverse(model))) * aNormal;
+			TexCoords = aTexCoords;
 			gl_Position = projection * view * vec4(FragPos, 1.0);
 		}
 	)";
@@ -79,6 +104,7 @@ int main(int argc, char** argv) {
 		#version 330 core
 		in vec3 FragPos;
 		in vec3 Normal;
+		in vec2 TexCoords;
 
 		out vec4 FragColor;
 
@@ -86,6 +112,7 @@ int main(int argc, char** argv) {
 		uniform vec3 viewPos;
 		uniform vec3 lightColor;
 		uniform vec3 objectColor;
+		uniform sampler2D texture1;
 
 		void main() {
 			//Ambient lighting
@@ -105,8 +132,12 @@ int main(int argc, char** argv) {
 			float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
 			vec3 specular = specularStrength * spec * lightColor;
 	
-			vec3 result = (ambient + diffuse + specular) * objectColor;
-			FragColor = vec4(result, 1.0);
+			vec3 lighting = (ambient + diffuse + specular);
+
+			//sample the texture
+			vec4 textColor = texture(texture1, TexCoords);
+
+			FragColor = vec4(lighting * objectColor, 1.0) * textColor;
 		}
 	)";
 
@@ -176,6 +207,7 @@ int main(int argc, char** argv) {
 			GLint viewPosLoc = glGetUniformLocation(shader.ID, "viewPos");
 			GLint lightColorLoc = glGetUniformLocation(shader.ID, "lightColor");
 			GLint objectColorLoc = glGetUniformLocation(shader.ID, "objectColor");
+			GLint texture1 = glGetUniformLocation(shader.ID, "texture1");
 
 			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -196,29 +228,14 @@ int main(int argc, char** argv) {
 			glUniform3f(viewPosLoc, 0.0f, 0.0f, 5.0f);
 			glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f);
 
+			//Bind the texture for the platform
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, platformTexture);
+			glUniform1i(texture1, 0);
 
 
-			ResourceData texData;
-			while (resourceManager.getNextResource(texData))
-			{
-				if (texData.data)
-				{
-					GLuint textureID;
-					glGenTextures(1, &textureID);
-					glBindTexture(GL_TEXTURE_2D, textureID);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-					GLenum format = (texData.channels == 4) ? GL_RGBA : GL_RGB;
-					glTexImage2D(GL_TEXTURE_2D, 0, format, texData.width, texData.height, 0, format, GL_UNSIGNED_BYTE, texData.data);
-					glGenerateMipmap(GL_TEXTURE_2D);
-					stbi_image_free(texData.data);
-					cout << "Loaded Texture: " << texData.name << " with ID: " << textureID << endl;
 
-
-				}
-			}
+			
 			
 
 			// ---Draw the platform
@@ -227,7 +244,7 @@ int main(int argc, char** argv) {
 			platformModel = glm::scale(platformModel, glm::vec3(10.0f, 1.0f, 10.0f));
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(platformModel));
 
-			glUniform3f(objectColorLoc, 0.2f, 0.8f, 0.2f);
+			glUniform3f(objectColorLoc, 1.0f, 1.0f, 1.0f);
 			platform.draw();
 
 			//--- Draw the cube
