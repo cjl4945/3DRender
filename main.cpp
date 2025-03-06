@@ -2,7 +2,7 @@
 #include "InitWindow.h"
 #include "Cube.h"
 #include "Shader.h"
-#include "Platform.h"
+#include "Room.h"
 #include "Camera.h"
 #include "ResourceManager.h"
 #include "imgui.h"
@@ -143,7 +143,7 @@ int main(int argc, char** argv) {
 
 	Shader shader(vertexShaderSource, fragmentShaderSource);
 	Cube cube;
-	Platform platform;
+	Room room;
 
 	bool running = true;
 	bool paused = false;
@@ -212,8 +212,10 @@ int main(int argc, char** argv) {
 			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 			//transformation matrices
+			int width, height;
+			SDL_GetWindowSize(window, &width, &height);
 			glm::mat4 view = camera.getViewMatrix();
-			glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
+			glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)width / (float)height, 0.1f, 100.0f);
 
 			//Change the background color
 			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -245,7 +247,7 @@ int main(int argc, char** argv) {
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(platformModel));
 
 			glUniform3f(objectColorLoc, 1.0f, 1.0f, 1.0f);
-			platform.draw();
+			room.draw();
 
 			//--- Draw the cube
 			//Translate the cube so it sits on top of the platform, moving up 0.5 (x , y** , z )

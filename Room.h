@@ -7,11 +7,11 @@
 
 
 
-class Platform
+class Room
 {
 public:
-	Platform();
-	~Platform();
+	Room();
+	~Room();
 	void draw() const;
 
 private:
@@ -21,8 +21,8 @@ private:
 
 	GLuint VAO, VBO, EBO;
 
-	static const float vertices[32];
+	static const float vertices[192];
 
-	static const unsigned int indices[6];
+	static const unsigned int indices[36];
 };
 

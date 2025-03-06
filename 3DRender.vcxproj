@@ -155,7 +155,7 @@
     <ClInclude Include="Linking\imgui\imstb_textedit.h" />
     <ClInclude Include="Linking\imgui\imstb_truetype.h" />
     <ClInclude Include="main.h" />
-    <ClInclude Include="Platform.h" />
+    <ClInclude Include="Room.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="stb_image.h" />
@@ -172,7 +172,7 @@
     <ClCompile Include="Linking\imgui\imgui_tables.cpp" />
     <ClCompile Include="Linking\imgui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Platform.cpp" />
+    <ClCompile Include="Room.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>

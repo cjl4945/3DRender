@@ -80,6 +80,15 @@ void processEvents(bool& running, Camera& camera, float deltaTime, bool &paused)
         {
             running = false;
         }
+        else if (event.type == SDL_WINDOWEVENT)
+        {
+            if (event.window.event == SDL_WINDOWEVENT_RESIZED)
+            {
+                int newWidth = event.window.data1;
+                int newHeight = event.window.data2;
+                glViewport(0, 0, newWidth, newHeight);
+            }
+        }
         if (event.type == SDL_KEYDOWN)
         {
             if (event.key.keysym.sym == SDLK_ESCAPE)
