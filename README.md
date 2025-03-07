@@ -1,7 +1,7 @@
 # 🎮 3D Renderer  
 
 ## 📌 Overview  
-This project is a **custom-built 3D rendering engine** developed in **C++**, leveraging **OpenGL and SDL2** for real-time graphics. Designed for **mid-level software engineers**, it serves as both an **educational tool** and a **foundation for advanced rendering techniques**.  
+This project is a **custom-built 3D rendering engine** developed in **C++**, leveraging **OpenGL and SDL2** for real-time graphics. 
 
 ## ✨ Features  
 ✔️ **Modular 3D Engine** – Clean separation of rendering, camera, shader, and resource management components.  
