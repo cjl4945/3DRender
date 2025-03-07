@@ -17,8 +17,7 @@ This project is a **custom-built 3D rendering engine** developed in **C++**, lev
 - **SDL2** – Manages window creation and input handling.  
 - **GLM** – Handles matrix and vector math.  
 - **stb_image** – Loads textures efficiently.  
-- **ImGui** – Provides **real-time UI** for debugging and scene control.  
-- **CMake** – Cross-platform build system.  
+- **ImGui** – Provides **real-time UI** for debugging and scene control.    
 
 ## 🚀 Getting Started  
 
