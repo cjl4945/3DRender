@@ -243,7 +243,7 @@ int main(int argc, char** argv) {
 			// ---Draw the platform
 			glm::mat4 platformModel = glm::mat4(1.0f);
 			platformModel = glm::translate(platformModel, glm::vec3(0.0f, 0.0f, 0.0f));
-			platformModel = glm::scale(platformModel, glm::vec3(10.0f, 1.0f, 10.0f));
+			platformModel = glm::scale(platformModel, glm::vec3(1.0f, 1.0f, 1.0f));
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(platformModel));
 
 			glUniform3f(objectColorLoc, 1.0f, 1.0f, 1.0f);
@@ -253,7 +253,7 @@ int main(int argc, char** argv) {
 			//Translate the cube so it sits on top of the platform, moving up 0.5 (x , y** , z )
 			glm::mat4 cubeModel = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 2.5f, 0.0f));
 
-			cubeModel = glm::rotate(cubeModel, static_cast<float>(SDL_GetTicks()) / 1000.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+			cubeModel = glm::rotate(cubeModel, static_cast<float>(SDL_GetTicks()) / 1000.0f, glm::vec3(0.0f, 1.0f, 1.0f));
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(cubeModel));
 			glUniform3f(objectColorLoc, objectColor[0], objectColor[1], objectColor[2]);
 
