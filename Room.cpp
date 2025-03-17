@@ -3,6 +3,9 @@
 //The room will span from -5 to 5 in X and Z, floor sy y=0 and ceiling at y=5
 //vertices for each face, normal vectors are pointing inward to light the interior
 //Each vertex: [x, y, z, nx, ny, nz, u, v]
+
+
+//need to change the room to dynamically add walls we
 const float Room::vertices[192]
 {
 	//Floor (y=0) - normals point up
