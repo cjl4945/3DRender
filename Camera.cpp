@@ -3,7 +3,7 @@
 
 
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
-	: Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(2.5f),
+	: Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(4.5f),
 	MouseSensitivity(0.1f), Zoom(45.0f)
 {
 	Position = position;
@@ -20,25 +20,33 @@ glm::mat4 Camera::getViewMatrix()
 }
 
 //Process input recieved from any keyboard-like input system
-void Camera::processKeyboard(Camera_Movement direction, float deltaTime)
+void Camera::processKeyboard(Camera_Movement direction, float deltaTime, const Room& room)
 {
 	float velocity = MovementSpeed * deltaTime;
+	glm::vec3 newPosition = Position;
+
 	if (direction == Camera_Movement::FORWARD)
 		{
-			Position += Front * velocity;
+			newPosition += Front * velocity;
 		}
 	if (direction == Camera_Movement::BACKWARD)
 		{
-			Position -= Front * velocity;
+			newPosition -= Front * velocity;
 		}
 	if (direction == Camera_Movement::LEFT)
 		{
-			Position -= Right * velocity;
+			newPosition -= Right * velocity;
 		}
 	if (direction == Camera_Movement::RIGHT)
 		{
-			Position += Right * velocity;
+			newPosition += Right * velocity;
 		}
+
+	newPosition.x = glm::clamp(newPosition.x, room.minBounds.x, room.maxBounds.x);
+	newPosition.y = glm::clamp(newPosition.y, room.minBounds.y, room.maxBounds.y);
+	newPosition.z = glm::clamp(newPosition.z, room.minBounds.z, room.maxBounds.z);
+
+	Position = newPosition;
 		
 }
 

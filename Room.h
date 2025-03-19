@@ -1,18 +1,24 @@
 #pragma once
 
 #include <GL/glew.h>
-#include "main.h"
+#include <glm.hpp>
+#include <vector>
 #include <iostream>
-#include <cstdlib>
+
 
 
 
 class Room
 {
 public:
-	Room();
+	Room(const glm::vec3& position, const glm::vec3& size);
 	~Room();
 	void draw() const;
+
+	//Room Boundary Limits
+	glm::vec3 getMinBounds() const;
+	glm::vec3 getMaxBounds() const;
+
 
 private:
 	void generateBuffers();
@@ -20,9 +26,11 @@ private:
 	void setVertexAttribs() const;
 
 	GLuint VAO, VBO, EBO;
+	glm::vec3 position;  //Room position in the world space
+	glm::vec3 size;	//width, height, depth
 
-	static const float vertices[192];
+	std::vector<float> vertices;
 
-	static const unsigned int indices[36];
+	std::vector<unsigned int> indices;
 };
 
