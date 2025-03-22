@@ -27,19 +27,19 @@ Ensure you have the following installed on your system:
 - **CMake**  
 - **SDL2 & OpenGL**  
 
-## 🎮 Controls & Usage  
-🕹️ **WASD + Mouse** – Move and look around the scene.  
-🔹 **ESC** – Toggle pause menu (ImGui-based UI for **real-time parameter adjustments**).  
-🎨 Modify shader settings to **test different lighting effects dynamically**.  
+## Controls & Usage  
+**WASD + Mouse** – Move and look around the scene.  
+**ESC** – Toggle pause menu (ImGui-based UI for **real-time parameter adjustments**).  
+Modify shader settings to **test different lighting effects dynamically**.  
 
-## 🚧 Future Enhancements  
-📌 Implement **Phong shading** for more realistic lighting.  
-📌 Add **real-time shadows** using shadow mapping.  
-📌 Optimize performance with **spatial partitioning structures**.  
-📌 Support additional **3D model formats**.  
+## Future Enhancements  
+Implement **Phong shading** for more realistic lighting.  
+Add **real-time shadows** using shadow mapping.  
+Optimize performance with **spatial partitioning structures**.  
+Support additional **3D model formats**.  
 
-## 👤 Contributors  
+## Contributors  
 Developed by **Chase Lewis**.  
 
-## 📜 License  
+## License  
 This project is licensed under the **MIT License**. See the `LICENSE` file for details. 
